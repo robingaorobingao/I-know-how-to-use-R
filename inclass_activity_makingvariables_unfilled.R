@@ -44,7 +44,7 @@ data$vote_primary[data$vote_primary < 1] <- NA
 summary(data$vote_primary) # fixed!
 
 # iv) Recode NAs in the vote_pres variable (if needed)
-data$vote_pres[data$vote_pres < 1] <- NA
+data$vote_pres[data$vote_pres < 1 | data$vote_pres == 12] <- NA
 summary(data$vote_pres) # fixed!
 
 # v) Recode NAs in the right_track variable (if needed)
@@ -70,53 +70,54 @@ table(data$vote_pres)
 data$vote_pres2 <- NA
 data$vote_pres2[data$vote_pres == 1] <- "Biden"
 data$vote_pres2[data$vote_pres == 2] <- "Trump"
-data$vote_pres2[data$vote_pres < 1] <- NA
+# data$vote_pres2[data$vote_pres < 1 | data$vote_pres == 12] <- NA
 data$vote_pres2[data$vote_pres > 2] <- "Other"
-table(data$vote_pres2)
 
 # iii) Now use the table and prop.table commands to summarize your variable. What percent of respondents voted for Trump? Biden? A third-party candidate?
-
+table(data$vote_pres2)
+prop.table(table(data$vote_pres2)) * 100
 
 # 3) Now let's look at the ideology variable. Right now it's a scale from 1 to 7 (see codebook for what each value means). 
 
 # i) Make a new character variable called lib_con that can take three values: Liberal, Moderate, or Conservative. Liberals are those with ideology values 1, 2, or 3. Conservatives are those with ideology of 5, 6, or 7. Moderates are those with ideology of 4. 
-
+data$lib_con <- NA
+data$lib_con[data$ideology == 1 | data$ideology == 2 | data$ideology == 3] <- "Liberal"
+data$lib_con[data$ideology >= 5 & data$ideology <= 7] <- "Conservative"
+data$lib_con[data$ideology == 4] <- "Moderate"
 
 # ii) Summarize the variable using table() and prop.table(). What fraction of the sample falls into each category?
-
-
+table(data$lib_con)
+prop.table(table(data$lib_con)) * 100
 
 #iii) Now make a two-way prop.table using both lib_con and vote_pres2. What does the table tell you?
-
-
+prop.table(table(data$lib_con, data$vote_pres2)) * 100
 
 # 4) Now let's practice making factor variables. 
 
 # i) Run the summary command on your vote_pres2 variable. What data type is it? 
-
-
+summary(data$vote_pres2)
 
 # ii) Next, take your vote_pres2 variable and make it into an unordered factor variable. 
-
+data$vote_pres2 <- as.factor(data$vote_pres2)
 
 # iii) Finally, run the summary command from i) again. How has the output changed?
-
-
+summary(data$vote_pres2)
 
 # 5) Now, let's make an ordered factor variable using the govt_corrupt variable. This will have two steps:
 
 # i) First, make a new character variable called corr_factor. For each respondent, their value of corr_factor should be the text associated with each numeric answer in the codebook. So, if govt_corrupt is equal to 1 for someone, their value of corr_factor should be "All". 
-
-
+data$corr_factor <- NA
+data$corr_factor[data$govt_corrupt == 1] <- "All"
+data$corr_factor[data$govt_corrupt == 2] <- "Most"
+data$corr_factor[data$govt_corrupt == 3] <- "About half"
+data$corr_factor[data$govt_corrupt == 4] <- "A few"
+data$corr_factor[data$govt_corrupt == 5] <- "None"
 
 # ii) Next, turn corr_factor into an unordered factored variable. Run summary() on corr_factor. What order do the levels appear in? Does this make sense?
-
-
+data$corr_factor <- as.factor(data$corr_factor)
+summary(data$corr_factor)
 
 # iii) Finally, turn corr_factor into an ORDERED factor. The "lowest" category should be "None", and the highest category should be "All". Run summary() on corr_factor again. How is it different than part ii?
-
-
-
-
-
-
+data$corr_factor <- factor(data$corr_factor, order = TRUE, levels = c("None", "A few", "About half", "Most", "All"))
+data$corr_factor[1]
+levels(data$corr_factor)
