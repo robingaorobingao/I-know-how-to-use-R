@@ -158,4 +158,4 @@ combined3 <- filter(combined2, pct_w != 0 | pct_b != 0)
 
 
 
-#it is a logical variable that is TRUE whenever it seems the officer arrests white OR Black drivers far more than the other category
+# it is a logical variable that is TRUE whenever it seems the officer arrests white OR Black drivers far more than the other category

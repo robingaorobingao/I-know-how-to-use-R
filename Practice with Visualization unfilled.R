@@ -98,7 +98,6 @@ newsummary <- stops %>%
 # Q9. Then, make a bar graph that shows the probability of a stop for each decade. Choose a few options to add to make it pretty!
 
 
-
 # Q10. Does this graph change your understanding of how age affects searches? Why or why not?
 
 
